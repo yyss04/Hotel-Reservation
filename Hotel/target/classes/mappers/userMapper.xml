@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.boardproject">
+	
+	<!-- 회원가입 -->
+	 <insert id="register">
+        INSERT INTO tbl_user (
+            userid
+            , userpw
+            , username
+            , useremail
+        ) VALUES (
+            #{userId}
+            , #{userPw}
+            , #{userName}
+            , #{userEmail}
+        )
+    </insert>
+    
+    <!-- 로그인 -->
+    <!-- 비밀번호는 컨트롤러에서 검증처리 들어가므로 여기에는 작성x -->
+    <select id="login" resultType="UserVO">
+	    SELECT
+	      *
+	    FROM tbl_user
+	    WHERE userid = #{userId}
+	</select>
+	
+	
+	<!-- 세션아이디, 로그인 유지기간 갱신 -->
+	<update id="keepLogin">
+	    UPDATE tbl_user
+	    SET sessionkey = #{sessionId}
+	        , sessionlimit = #{sessionLimit}
+	    WHERE userid = #{userId}
+	</update>
+	
+	
+	<!-- 로그인 시 loginCookie값과 session_key가 일치하는 정보를 가져옴 -->
+	<select id="checkUserWithSessionKey" resultType="UserVO">
+	    SELECT
+	        *
+	    FROM tbl_user
+	    WHERE sessionkey = #{value}
+	</select>
+	
+
+
+</mapper>

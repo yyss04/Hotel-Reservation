@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.boardproject">
+	
+	<!-- 처음 예약정보 등록 -->
+	<insert id="reservation_number_people" parameterType="ReservationVO">
+		INSERT INTO
+			tbl_room_people
+			(reservation_number,room_type,adult,child)
+		VALUES
+			(#{reservation_number},#{room_type},#{adult},#{child})	
+	</insert>
+	
+	<!-- 방가격 조회 -->
+	<select id="RoomPrice" parameterType="ReservationVO"
+		resultType="int">
+		SELECT room_prices
+		FROM tbl_room_information
+		WHERE
+		room_type=#{room_type}
+	</select>
+	
+	<!-- 전체예약 등록 -->
+	<insert id="reservationInsert" parameterType="ReservationVO">
+		INSERT INTO
+			tbl_reservation
+			(reservation_number, userid, reservation_date_in,reservation_date_out,price,confirmation_payment)
+		VALUES
+			(#{reservation_number}, #{userId}, #{reservation_data_in},#{reservation_data_out},#{price},#{confirmation_payment})
+	</insert>
+	
+	<!-- 선택한 날짜 조회 -->
+	<select id="DuplicateFind" resultType="int" parameterType="ReservationVO">
+		SELECT count(*) 
+		FROM tbl_reservation r JOIN tbl_room_people p
+		ON
+			r.reservation_number = p.reservation_number
+		WHERE
+			room_type IN(#{room_type})
+		AND
+			( #{reservation_data_in} BETWEEN reservation_date_in AND reservation_date_out
+		OR
+			#{reservation_data_out} BETWEEN reservation_date_in AND reservation_date_out);
+	</select>
+	
+	<!-- 결제확인 -->
+	<select id="PayCheck" resultType="String" >
+		SELECT
+			confirmation_payment 
+		FROM 
+		tbl_reservation 
+		WHERE
+			userid=#{userid}
+	</select>
+	
+	<!-- 결제처리 -->
+	<update id="PayCheckUpdate" parameterType="String">
+		UPDATE
+			tbl_reservation 
+		<!-- 결제되면 1로 바뀜 -->
+		SET confirmation_payment = 1
+		WHERE
+			reservation_number=#{reservation_number}
+	</update>
+	
+	<!-- 예약 조회 -->
+	<select id="reservationSelect" resultType="ReservationVO" parameterType="String">
+		SELECT * FROM
+		tbl_reservation r JOIN tbl_room_people p ON r.reservation_number = p.reservation_number
+		WHERE userid = #{userId}
+	</select>
+	
+	
+	<!-- 예약취소 -->
+	<delete id="ReservationDelete">
+	DELETE
+	FROM tbl_reservation
+	</delete>
+	
+	
+</mapper>

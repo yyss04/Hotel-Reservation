@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.boardproject">
+	
+	<!-- 글 작성 -->
+	<insert id="create">
+        INSERT INTO tbl_article (articleno, title, 
+        			content, writer, regdate, viewcnt)
+        VALUES ( #{articleNo}, #{title}, 
+        		#{content}, #{writer}, #{regDate}, #{viewCnt})
+    </insert>
+    
+    <!-- 글 조회 -->
+    <select id="read" resultType="ArticleVO">
+        SELECT articleno, title, content, writer, 
+           		regdate, viewcnt
+        FROM tbl_article
+        WHERE articleno = #{articleNo}
+    </select>
+    
+    <!-- 글 수정 -->
+    <update id="update">
+        UPDATE tbl_article
+        SET title = #{title}, content = #{content}
+        WHERE articleno = #{articleNo}
+    </update>
+    
+    <!-- 글 삭제 -->
+    <delete id="delete" parameterType="integer">
+        DELETE FROM tbl_article
+        WHERE articleno = #{articleNo}
+    </delete>
+    
+    <!-- 글 목록 -->
+    <select id="listAll" resultType="ArticleVO">
+        <![CDATA[
+        SELECT
+            articleno,
+            title,
+            content,
+            writer,
+            regdate,
+            viewcnt
+        FROM tbl_article
+        WHERE articleno > 0
+        ORDER BY articleno DESC, regdate DESC
+        ]]>
+    </select>
+    
+    <!--게시글 전체 목록 페이징처리 1 : 페이지 당 게시글의 갯수를 10으로 설정한 경우-->
+    <select id="listPaging" resultType="ArticleVO">
+        <![CDATA[
+        SELECT
+            articleno,
+            title,
+            content,
+            writer,
+            regdate,
+            viewcnt
+        FROM tbl_article
+        WHERE articleno > 0
+        ORDER BY articleno DESC, regdate DESC
+        limit #{page}, 10
+    	]]>
+    </select>
+    
+    <!--게시글 페이지 번호 처리 -->
+	 <select id="listCriteria" resultType="ArticleVO">
+	    <![CDATA[
+	    SELECT
+	        articleno,
+	        title,
+	        content,
+	        writer,
+	        regdate,
+	        viewcnt
+	    FROM tbl_article
+	    WHERE articleno > 0
+	    ORDER BY articleno DESC, regdate DESC
+	    LIMIT #{pageStart}, #{perPageNum}
+	    ]]>
+	</select>   
+    
+    <!-- 페이징처리를 위한 전체 게시글의 갯수 구하기 -->
+    <select id="countArticles" resultType="int">
+	    <![CDATA[
+	    SELECT
+	        COUNT(articleno)
+	    FROM tbl_article
+	    WHERE articleno > 0
+	    ]]>
+	</select>
+	
+	<!-- 검색된 게시글 목록 -->
+	<select id="listSearch" resultType="ArticleVO">
+	    <![CDATA[
+	    SELECT
+	        *
+	    FROM tbl_article
+	    WHERE articleno > 0
+	    ]]>
+	      <include refid="search"/>
+	    <![CDATA[
+	    ORDER BY articleno DESC, regdate DESC
+	    LIMIT #{pageStart}, #{perPageNum}
+	    ]]>
+	</select>
+	
+	<!-- 검색된 글 갯수 -->
+	<select id="countSearchedArticles" resultType="int">
+	    <![CDATA[
+	    SELECT
+	        COUNT(articleno)
+	    FROM tbl_article
+	    WHERE articleno > 0
+	    ]]>
+	    <include refid="search"/>
+	</select>	
+	
+	<!-- 동적sql 검색옵션 -->
+	<sql id="search">
+	    <if test="searchType != null">
+	        <if test="searchType == 'title'.toString()">
+	            AND title LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="searchType == 'ccontent'.toString()">
+	            AND content LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="searchType == 'writer'.toString()">
+	            AND writer LIKE CONCAT('%', #{keyword}, '%')
+	        </if>
+	        <if test="searchType == 'title_content'.toString()">
+	            AND (
+	                title LIKE CONCAT('%', #{keyword}, '%')
+	                OR content LIKE CONCAT('%', #{keyword}, '%')
+	            )
+	        </if>
+	    </if>
+	</sql>  
+	
+	<!-- 게시글 조회수 -->
+	<update id="updateViewCnt">
+	    UPDATE tbl_article
+	    SET viewcnt = viewcnt + 1
+	    WHERE articleno = #{articleNo}
+	</update>  
+
+</mapper>
