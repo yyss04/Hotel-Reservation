@@ -2,6 +2,7 @@
 java, spring을 기반으로 한 호텔 예약 웹사이트 프로젝트 
 
 > 호텔 객실 예약 웹사이트 입니다.
+
 > http://www.luxuryhotel.ml/
 
 ## 프로젝트소개
