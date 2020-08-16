@@ -27,78 +27,72 @@
     </div>
     <!-- bradcam_area_end -->
 
- <div class="content-wrapper">
-     <div class="container">
-  		<div class="row">
 			<!-- Content Header (Page header) -->
-			<section>
-				<h1>후기게시판</h1>
-				
-			</section>
-
+ <div class="whole_wrap">
+     <div class="container">
+  		<div class="section-top-border">
+			<h2 class="mb-30">방문 후기</h2>
 			<!-- Main content -->
 			<section class="content container-fluid">
 
 				<div class="col-lg-12">
 					
 						<%--게시글 제목 영역--%>
-				
-						<div class="container" role="main">
 							<h2>${article.title}</h2>
-							<div class="bg-white rounded shadow-sm">
-								<div class="board_info_box">
+							<div class="bg-white rounded">
+								<div class="board_info_box" style="margin-top : 20px">
 									<span class="username"> <a href="#">${article.writer}</a></span>
 									<span class="description"><fmt:formatDate
 										pattern="yyyy-MM-dd a HH:mm" value="${article.regDate}" /></span>
 								</div>
-								<div class="board_content" style="height: 300px">
+								<div style="margin-top : 20px"></div>
+								<div class="board_content shadow-sm" style="height: 300px">
 			                        ${fn:replace(fn:replace(fn:escapeXml(article.content), newLine, "<br/>") , " ", "&nbsp;")}
 								</div>
 							</div>
-						</div>
-						
 							<div style="margin-top : 20px">
+							
 								<%--버튼 영역--%>
 								<input type="hidden" name="articleNo" value="${article.articleNo}"> 
 								<input type="hidden" name="page" value="${searchCriteria.page}"> 
 								<input type="hidden" name="perPageNum" value="${searchCriteria.perPageNum}"> 
 								<input type="hidden" name="searchType" value="${searchCriteria.searchType}"> 
 								<input type="hidden" name="keyword" value="${searchCriteria.keyword}">
-								<button type="submit" class="btn btn-primary listBtn"><i class="fa fa-list"></i> 목록</button>
+								<button type="submit" class="genric-btn info-border medium listBtn">목록</button>
 								<c:if test="${login.userId == article.writer}">
 							        <div class="pull-right">
-							       		 <input type="button" class="btn btn-warning" value="수정" onclick="location.href='modify?articleNo=${article.articleNo }'">
-							       		 <input type="button" class="btn btn-danger" value="삭제" onclick="del(${article.articleNo})">
+							       		 <input type="button" class="genric-btn info-border medium" value="수정" onclick="location.href='modify?articleNo=${article.articleNo }'">
+							       		 <input type="button" class="genric-btn info-border medium" value="삭제" onclick="del(${article.articleNo})">
 							        </div>
 							    </c:if>
 							
 						
 							</div>
 							
-										<%--댓글 등록 영역--%>
+						<%--댓글 등록 영역--%>
 						<!-- Reply Form {s} -->
-						
-						<div class="my-3 p-3 bg-white rounded shadow-sm">
-							<div class="box-body">
+							<div style="margin-top : 20px">
 								 <c:if test="${not empty login}">
-									<form:form name="form" id="form" role="form" modelAttribute="replyVO" method="post">
-										<form:hidden path="articleNo" id="articleNo" />
-										
-										<div class="row">
-											<div class="col-sm-10">
-												<form:textarea path="content" id="content"
-													class="form-control input-sm" rows="3" placeholder="댓글을 입력해 주세요"></form:textarea>
+									<div class="box-body">
+										<form:form name="form" id="form" role="form" modelAttribute="replyVO" method="post">
+											<form:hidden path="articleNo" id="articleNo" />
+											
+											<div class="row">
+												<div class="col-sm-10">
+													<form:textarea path="content" id="content"
+														class="form-control input-sm" rows="3" placeholder="댓글을 입력해 주세요"></form:textarea>
+												</div>
+												<div class="col-sm-2">
+													<form:input path="reg_id" class="form-control input-sm" id="reg_id"
+	 													value="${login.userId}" readonly="true"></form:input>
+													<button type="button" class="btn-sm genric-btn default"
+														id="btnReplySave" style="width: 100%; margin-top: 10px"><i class="fa fa-save"></i>
+														저 장
+													</button>
+												</div>
 											</div>
-											<div class="col-sm-2">
-												<form:input path="reg_id" class="form-control input-sm" id="reg_id"
- 													value="${login.userId}" readonly="true"></form:input>
-												<button type="button" class="btn btn-primary btn-sm btn-block"
-													id="btnReplySave" style="width: 100%; margin-top: 10px"><i class="fa fa-save"></i>
-													저 장
-												</button>
-											</div>
-										</div>
-									</form:form>
+										</form:form>
+									</div>
 								</c:if>
 								<c:if test="${empty login}">
 						            <a href="${path}/user/login" class="btn btn-default btn-block" role="button">
@@ -106,18 +100,19 @@
 						            </a>
 						        </c:if>
 							</div>
-						</div>
+						</div>	
 						<!-- Reply Form {e} -->
-
+				</section>
 
 						<!-- Reply List {s}-->
-							<div class="my-3 p-3 bg-white rounded shadow-sm" style="padding-top: 10px">
-								<h4 class="border-bottom pb-2 mb-0">댓글 목록</h4>
-								<div id="replyList"></div>
-							</div>	
+							<div class="my-3 p-3 bg-white rounded" style="padding-top: 10px">
+								<div style="margin-top : 20px">
+									<h4 class="border-bottom pb-2 mb-0">댓글 목록</h4>
+								</div>	
+									<div id="replyList" style="margin-top : 20px"></div>
+							</div>
 						<!-- Reply List {e}-->
-				</div>
-			</section>
+			
 			
 
 		</div>	
@@ -222,7 +217,8 @@ function showReplyList(){
 			                    		+ this.rid + 
 			                    		')" ><i class="fa fa-times">삭제</i></a>';
 		                    	htmls += '<a href="javascript:void(0)" class="pull-right btn-box-tool replyModBtn" onclick="fn_editReply(' 
-		                    			+ this.rid + ', \'' + this.reg_id + '\', \'' + this.content + '\' )"><i class="fa fa-edit">수정</i></a>';
+		                    			+ this.rid + ', \'' + this.reg_id + '\', \'' + this.content 
+		                    			+ '\' )" style="padding-right:10px"><i class="fa fa-edit">수정</i></a>';
 		                   	}
 	                    	
 	                    	htmls += '</span>';
@@ -244,7 +240,8 @@ function showReplyList(){
 $(document).on('click', '#btnReplySave', function(){
 		var replyContent = $('#content').val();
 		var replyReg_id = $('#reg_id').val();
-		var paramData = JSON.stringify({"content": replyContent
+		var paramData = JSON.stringify({
+				"content": replyContent
 				, "reg_id": replyReg_id
 				, "articleNo":'${article.articleNo}'
 		});

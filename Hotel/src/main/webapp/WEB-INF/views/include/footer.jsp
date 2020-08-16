@@ -17,9 +17,8 @@
                             <h3 class="footer_title">
                                 address
                             </h3>
-                            <p class="footer_text"> 200, Green road, Mongla, <br>
-                                New Yor City USA</p>
-                            <a href="#" class="line-button">Get Direction</a>
+                            <p class="footer_text"> 강원 강릉시 창해로 350번길 <br>
+                                	럭셔리 호텔</p>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6 col-lg-3">
