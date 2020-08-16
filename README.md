@@ -9,7 +9,7 @@
   
 ## 개발환경
   * java 1.8
-  * spring 4.x
+  * spring 3.x
   * Maria DB
   * tomcat 8.5
   * jquery 3.2.1
