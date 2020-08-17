@@ -1,12 +1,13 @@
 package com.board.controller;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.board.domain.UserVO;
@@ -37,8 +38,23 @@ public class UserRegisterController {
 		userVO.setUserPw(hashedPw);
 		userService.register(userVO);
 		redirectAttributes.addFlashAttribute("msg", "REGISTERED");
-
+		
 		return "redirect:/user/login";
+	}
+	
+	// 아이디 중복 체크
+	@RequestMapping(value = "/idCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String userId) throws Exception {
+
+		return userService.idChk(userId);
+	}
+	
+	// 이메일 중복 체크
+	@RequestMapping(value = "/emailCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public int emailCheck(@RequestParam("userEmail") String userEmail) throws Exception {
+		return userService.emailChk(userEmail);
 	}
 	
 	

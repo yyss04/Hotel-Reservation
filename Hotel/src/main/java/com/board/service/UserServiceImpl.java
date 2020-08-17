@@ -44,4 +44,15 @@ public class UserServiceImpl implements UserService {
 		return userDAO.checkUserWithSessionKey(value);
 	}
 
+	@Override
+	public int idChk(String userId) throws Exception {
+		return userDAO.idChk(userId);
+	}
+
+	@Override
+	public int emailChk(String userEmail) throws Exception {
+		return userDAO.emailChk(userEmail);
+	}
+	
+
 }

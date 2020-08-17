@@ -50,6 +50,18 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne(NAMESPACE + ".checkUserWithSessionKey", value);
 	}
 
+	@Override
+	public int idChk(String userId) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE + ".idChk", userId);
+		return result;
+	}
+
+	@Override
+	public int emailChk(String userEmail) throws Exception {
+		int result = sqlSession.selectOne(NAMESPACE + ".emailChk", userEmail);
+		return result;
+	}
+
 
 
 

@@ -46,6 +46,21 @@
 	    WHERE sessionkey = #{value}
 	</select>
 	
+	<!-- 아이디 중복체크 -->
+	<select id="idChk" parameterType="String" resultType="int">
+		SELECT count(*) 
+		FROM tbl_user
+		WHERE userid = #{userId}
+	</select>
+	
+	<!-- 이메일 중복체크 -->
+	<select id="emailChk" parameterType="String" resultType="int">
+		SELECT count(*) 
+		FROM tbl_user
+		WHERE useremail = #{userEmail}
+	</select>
+	
+
 
 
 </mapper>

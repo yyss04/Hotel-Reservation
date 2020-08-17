@@ -19,6 +19,11 @@ public interface UserDAO {
 	// 세션키 검증
 	UserVO checkUserWithSessionKey(String value) throws Exception;
 	
+	// 아이디 중복체크
+	public int idChk(String userId) throws Exception;
+
+	// 이메일 중복체크
+	public int emailChk(String userEmail) throws Exception;
 
 
 }

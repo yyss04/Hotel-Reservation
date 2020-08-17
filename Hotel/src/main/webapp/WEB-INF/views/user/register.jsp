@@ -90,7 +90,7 @@ body {
 </head>
 <body>
 <div class="signup-form">
-    <form action="${path}/user/register" method="post" class="form-horizontal">
+    <form action="${path}/user/register" method="post" class="form-horizontal" id="regForm">
       	<div class="row">
         	<div class="col-8 offset-4">
 				<h2>회원가입</h2>
@@ -99,41 +99,213 @@ body {
         <div class="form-group row">
 			<label class="col-form-label col-4">아이디</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="userId" required="required">
-            </div>        	
+                <input type="text" class="form-control" name="userId" id="userId" required="required">
+            	<div class="checl_font" id="id_check"></div>
+            	</div>        	
         </div>
          <div class="form-group row">
 			<label class="col-form-label col-4">이름</label>
 			<div class="col-8">
-                <input type="text" class="form-control" name="userName" required="required">
+                <input type="text" class="form-control" name="userName" id="userName" required="required">
+				<div class="check_font" id="name_check"></div>
             </div>        	
         </div>
 		<div class="form-group row">
 			<label class="col-form-label col-4">이메일</label>
 			<div class="col-8">
-                <input type="email" class="form-control" name="userEmail" required="required">
+                <input type="email" class="form-control" name="userEmail" id="userEmail" required="required">
+            	<div class="check_font" id="email_check"></div>
             </div>        	
         </div>
 		<div class="form-group row">
 			<label class="col-form-label col-4">비밀번호</label>
 			<div class="col-8">
-                <input type="password" class="form-control" name="userPw" required="required">
+                <input type="password" class="form-control" name="userPw" id="userPw" required="required">
+            	<div class="check_font" id="pw_check"></div>
             </div>        	
         </div>
 		<div class="form-group row">
 			<label class="col-form-label col-4">비밀번호 확인</label>
 			<div class="col-8">
-                <input type="password" class="form-control" required="required">
+                <input type="password" class="form-control" name="userPw2" id="userPw2" required="required">
+            	<div class="check_font" id="pw2_check"></div>
             </div>        	
         </div>
 		<div class="form-group row">
 			<div class="col-8 offset-4">
-				<p><label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>.</label></p>
-				<button type="submit" class="btn btn-primary btn-lg">회원가입</button>
+				<button id="reg_submit" class="btn btn-primary">회원가입</button>
 			</div>  
 		</div>		      
     </form>
 	<div class="text-center">이미 회원이십니까? <a href="${path}/user/login">로그인</a></div>
 </div>
+
+<script type="text/javascript">
+//모든 공백 체크 정규식
+var empJ = /\s/g;
+//아이디 정규식
+var idJ = /^[a-z0-9]{4,12}$/;
+//이름 정규식
+var nameJ = /^[가-힣]{2,6}$/;
+//이메일 검사 정규식
+var mailJ = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+//비밀번호 정규식
+var pwJ = /^[A-Za-z0-9]{4,12}$/;
+
+
+// 아이디 유효성 검사(1 = 중복 / 0 != 중복)
+$("#userId").blur(function() {
+	// id = "id_reg" / name = "userId"
+	var userId = $('#userId').val();
+	$.ajax({
+		url : '${pageContext.request.contextPath}/user/idCheck?userId='+ userId,
+		type : 'get',
+		success : function(data) {
+			console.log("1 = 중복o / 0 = 중복x : "+ data);							
+			
+			if (data == 1) {
+					// 1 : 아이디가 중복되는 문구
+					$("#id_check").text("이미 사용중인 아이디입니다.");
+					$("#id_check").css("color", "red");
+					$("#reg_submit").attr("disabled", true);
+				} else {
+					
+					if(idJ.test(userId)){
+						// 0 : 아이디 길이 / 문자열 검사
+						$("#id_check").text("");
+						$("#reg_submit").attr("disabled", false);
+			
+					} else if(userId == ""){
+						
+						$('#id_check').text('아이디를 입력해주세요 :)');
+						$('#id_check').css('color', 'red');
+						$("#reg_submit").attr("disabled", true);				
+						
+					} else {
+						
+						$('#id_check').text("아이디는 소문자와 숫자 4~12자리만 가능합니다 :)");
+						$('#id_check').css('color', 'red');
+						$("#reg_submit").attr("disabled", true);
+					}
+					
+				}
+			}, error : function() {
+					console.log("실패");
+			}
+		});
+	});
+	
+	
+//이름에 특수문자 들어가지 않도록 설정
+$("#userName").blur(function() {
+	if (nameJ.test($(this).val())) {
+			console.log(nameJ.test($(this).val()));
+			$("#name_check").text('');
+	} else {
+		$('#name_check').text('이름을 확인해주세요');
+		$('#name_check').css('color', 'red');
+	}
+});
+		
+// 이메일 중복 검사(1 중복 || 0 사용가능)
+$('#userEmail').blur(function(){
+	// id = "id_reg" / name = "userId"
+	var userEmail = $(this).val();
+	$.ajax({
+		url :'${pageContext.request.contextPath}/user/emailCheck?userEmail='+ userEmail,
+		type :'get',
+		dataType : 'json',
+		success : function(data){
+			console.log(data);
+			
+			if(data == 1){
+				// 1 : 아이디가 중복되는 문구
+				$("#email_check").text("이미 가입된 이메일입니다 :p");
+				$("#email_check").css("color", "red");
+				$("#reg_submit").attr("disabled", true);
+			} else{
+				// 이메일
+				if(mailJ.test($('#userEmail').val())){
+					console.log(mailJ.test($('#userEmail').val()));
+					$("#email_check").text('');
+					$("#reg_submit").attr("disabled", false);
+				} else {
+					$('#email_check').text('이메일을 확인해주세요 :)');
+					$('#email_check').css('color', 'red');
+					$("#reg_submit").attr("disabled", true);
+				}
+			
+			}
+			
+		}, error : function(error) {
+			console.log("실패");
+		}
+	});
+	
+});
+
+// 비밀번호 유효성 검사
+// 1-1 정규식 체크
+$('#userPw').blur(function() {
+	if (pwJ.test($('#userPw').val())) {
+		console.log('true');
+		$('#pw_check').text('');
+	} else {
+		console.log('false');
+		$('#pw_check').text('숫자 or 문자로만 4~12자리 입력');
+		$('#pw_check').css('color', 'red');
+	}
+});
+
+// 1-2 패스워드 일치 확인
+$('#userPw2').blur(function() {
+	if ($('#userPw').val() != $(this).val()) {
+		$('#pw2_check').text('비밀번호가 일치하지 않습니다 :(');
+		$('#pw2_check').css('color', 'red');
+	} else {
+		$('#pw2_check').text('');
+	}
+});
+
+		
+//가입하기 실행 버튼 유효성 검사!
+var inval_Arr = new Array(3).fill(false);
+$('#reg_submit').click(function(){
+	// 비밀번호가 같은 경우 && 비밀번호 정규식
+	if (($('#userPw').val() == ($('#userPw2').val()))
+			&& pwJ.test($('#userPw').val())) {
+		inval_Arr[0] = true;
+	} else {
+		inval_Arr[0] = false;
+	}
+	// 이름 정규식
+	if (nameJ.test($('#userName').val())) {
+		inval_Arr[1] = true;	
+	} else {
+		inval_Arr[1] = false;
+	}
+	// 이메일 정규식
+	if (mailJ.test($('#userEmail').val())){
+		console.log(phoneJ.test($('#userEmail').val()));
+		inval_Arr[2] = true;
+	} else {
+		inval_Arr[2] = false;
+	}
+	
+	var validAll = true;
+	for(var i = 0; i < inval_Arr.length; i++){
+		
+		if(inval_Arr[i] == false){
+			validAll = false;
+		}
+	}
+	
+	if(validAll){ // 유효성 모두 통과
+		$("#reg_submit").submit();
+	} else{
+	}
+});
+	
+</script>
 </body>
 </html>

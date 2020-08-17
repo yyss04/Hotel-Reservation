@@ -19,5 +19,10 @@ public interface UserService {
     // 회원정보 조회
     UserVO checkLoginBefore(String value) throws Exception;
 
+    // id 중복체크
+    int idChk(String userId) throws Exception;
+    
+    // email 중복체크
+    int emailChk(String userEmail) throws Exception;
     
 }
