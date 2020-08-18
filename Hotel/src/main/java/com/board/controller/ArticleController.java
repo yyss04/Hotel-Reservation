@@ -47,23 +47,10 @@ public class ArticleController {
 	    logger.info("write POST...");
 	    logger.info(articleVO.toString());
 	    articleService.create(articleVO);
-	    redirectAttributes.addFlashAttribute("msg", "regSuccess");
 
 	    return "redirect:/article/listSearch";
 	}
-	
-//	
-//	// 게시판 목록
-//	@RequestMapping(value = "/list", method = RequestMethod.GET)
-//	public String list(Model model) throws Exception {
-//
-//	    logger.info("list ...");
-//	    model.addAttribute("articles", articleService.listAll());
-//
-//	    return "/article/listsearch";
-//	}
-//	
-	
+
 	// 글 조회
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public String read(ArticleVO articleVO, @RequestParam("articleNo") Integer articleNo,
@@ -111,24 +98,6 @@ public class ArticleController {
 	    return "redirect:/article/listSearch";
 	}
 	
-	// 삭제 처리
-//	@RequestMapping(value = "/remove", method = RequestMethod.POST)
-//	public String remove(@RequestParam("articleNo") Integer articleNo,
-//	                     SearchCriteria searchCriteria, ArticleVO articleVO,
-//	                     RedirectAttributes redirectAttributes) throws Exception {
-//
-//	    logger.info("articleVO : " + articleVO.toString());
-//	    articleService.delete(articleNo);
-//	    redirectAttributes.addAttribute("page", searchCriteria.getPage());
-//	    redirectAttributes.addAttribute("perPageNum", searchCriteria.getPerPageNum());
-//	    redirectAttributes.addAttribute("searchType", searchCriteria.getSearchType());
-//	    redirectAttributes.addAttribute("keyword", searchCriteria.getKeyword());
-//	    redirectAttributes.addFlashAttribute("msg", "delSuccess");
-//
-//	    return "redirect:/article/listSearch";
-//	}
-
-	
 	// 게시물 삭제
 		@RequestMapping(value = "/remove", method = RequestMethod.GET)
 		public String remove(@RequestParam("articleNo") Integer articleNo) throws Exception {
@@ -154,23 +123,6 @@ public class ArticleController {
     }
     
 
-	// 공지사항 조회
-    @RequestMapping(value = "/notice", method = RequestMethod.GET)
-    public String notice(@ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
-                       Model model) throws Exception {
-
-        logger.info("search list() called ...");
-
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCriteria(searchCriteria);
-        pageMaker.setTotalCount(articleService.countSearchedArticles(searchCriteria));
-
-        model.addAttribute("articles", articleService.listSearch(searchCriteria));;
-        model.addAttribute("pageMaker", pageMaker);
-
-        return "article/notice";
-    }
-	
 	
 	
 	

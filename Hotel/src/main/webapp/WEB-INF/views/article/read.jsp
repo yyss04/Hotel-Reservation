@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 
@@ -31,7 +30,6 @@
  <div class="whole_wrap">
      <div class="container">
   		<div class="section-top-border">
-			<h2 class="mb-30">방문 후기</h2>
 			<!-- Main content -->
 			<section class="content container-fluid">
 
@@ -40,14 +38,14 @@
 						<%--게시글 제목 영역--%>
 							<h2>${article.title}</h2>
 							<div class="bg-white rounded">
-								<div class="board_info_box" style="margin-top : 20px">
+								<div class="board_info_box" style="margin-top : 15px">
 									<span class="username"> <a href="#">${article.writer}</a></span>
 									<span class="description"><fmt:formatDate
 										pattern="yyyy-MM-dd a HH:mm" value="${article.regDate}" /></span>
 								</div>
-								<div style="margin-top : 20px"></div>
+								<div style="margin-top : 50px"></div>
 								<div class="board_content shadow-sm" style="height: 300px">
-			                        ${fn:replace(fn:replace(fn:escapeXml(article.content), newLine, "<br/>") , " ", "&nbsp;")}
+			                        ${article.content}
 								</div>
 							</div>
 							<div style="margin-top : 20px">
@@ -61,7 +59,7 @@
 								<button type="submit" class="genric-btn info-border medium listBtn">목록</button>
 								<c:if test="${login.userId == article.writer}">
 							        <div class="pull-right">
-							       		 <input type="button" class="genric-btn info-border medium" value="수정" onclick="location.href='modify?articleNo=${article.articleNo }'">
+							       		 <input type="button" class="genric-btn info-border medium" value="수정" onclick="location.href='modify?articleNo=${article.articleNo}'">
 							       		 <input type="button" class="genric-btn info-border medium" value="삭제" onclick="del(${article.articleNo})">
 							        </div>
 							    </c:if>
@@ -343,6 +341,20 @@ function fn_deleteReply(rid){
 		
 	}
 
+// var oEditors = []; 
+// 	nhn.husky.EZCreator.createInIFrame({
+// 	oAppRef : oEditors, 
+// 	elPlaceHolder : "content", //저는 textarea의 id와 똑같이 적어줬습니다. 
+// 	sSkinURI : "/se2/SmartEditor2Skin.html", //경로를 꼭 맞춰주세요! 
+// 	htParams : { 
+// 		// 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
+// 		bUseToolbar : false, 
+// 		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
+// 		bUseVerticalResizer : false, 
+// 		// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
+// 		bUseModeChanger : false 
+// 	} 
+// });
 </script>
 
 </body>

@@ -7,15 +7,17 @@
 <%@ include file="../include/head.jsp"%>
 </head>
 <body>
-	 <!-- header-start -->
-    <%@ include file="../include/header.jsp"%>
-    <!-- header-end -->
-    
-    <!-- bradcam_area_start -->
-    <div class="bradcam_area breadcam_bg">
-        <h3>방문 후기</h3>
-    </div>
-    <!-- bradcam_area_end -->
+<!-- header-start -->
+<%@ include file="../include/header.jsp"%>
+<script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script> 
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- header-end -->
+
+<!-- bradcam_area_start -->
+<div class="bradcam_area breadcam_bg">
+    <h3>방문 후기</h3>
+</div>
+<!-- bradcam_area_end -->
 
 		<!-- Content Wrapper. Contains page content -->
 <div class="whole_wrap">
@@ -26,8 +28,7 @@
 			<!-- Main content -->
 			<section class="content container-fluid">
 				<div class="col-lg-12">
-					<form role="form" id="writeForm" method="post"
-						action="${path}/article/modify">
+					<form role="form" id="modForm" method="post" action="${path}/article/modify">
 						<div class="box box-primary">
 							<div class="box-header with-border">
 								<h3 class="box-title">게시글 작성</h3>
@@ -44,9 +45,13 @@
 							    </div>
 							    <div class="form-group">
 							        <label for="content">내용</label>
-							        <textarea class="form-control" id="content" name="content" rows="30"
-							                  placeholder="내용을 입력해주세요" style="height: 300px">${article.content}</textarea>
-							    </div>
+							        <div class="jsx-2303464893 editor"> 
+					               		<div class="fr-box fr-basic fr-top" role="application"> 
+						               		<div class="fr-wrapper show-placeholder" dir="auto"> 
+						               			<textarea name="content" id="content" style="width: 100%; height: 412px;">${article.content}</textarea> 
+					               			</div> 
+				               			</div> 
+							    	</div>
 							    <div class="form-group">
 							        <label for="writer">작성자</label>
 							        <input class="form-control" id="writer" name="writer" value="${login.userId}" readonly>
@@ -60,11 +65,12 @@
 									<button type="button" class="genric-btn info-border medium cancelBtn">
 										취소
 									</button>
-									<button type="submit" class="genric-btn info-border medium modBtn">
+									<button id="button" type="submit" class="genric-btn info-border medium modBtn">
 										수정 저장
 									</button>
 								</div>
 							</div>
+						</div>
 						</div>
 					</form>
 				</div>
@@ -92,10 +98,6 @@
 		var formObj = $("form[role='form']");
 		console.log(formObj);
 
-		$(".modBtn").on("click", function() {
-			formObj.submit();
-		});
-
 		$(".cancelBtn").on("click", function() {
 			history.go(-1);
 		});
@@ -107,6 +109,25 @@
 	            + "&keyword=${searchCriteria.keyword}";
 		});
 
+	});
+
+	var oEditors = []; 
+		nhn.husky.EZCreator.createInIFrame({
+		oAppRef : oEditors, 
+		elPlaceHolder : "content", //저는 textarea의 id와 똑같이 적어줬습니다. 
+		sSkinURI : "/se2/SmartEditor2Skin.html", //경로를 꼭 맞춰주세요! 
+		fCreator : "createSEditor2", 
+		htParams : { // 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
+			bUseToolbar : true, // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
+			bUseVerticalResizer : false, // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
+			bUseModeChanger : false 
+		} 
+	});
+		
+	$(".modBtn").on("click", function() {
+		oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+        var content = document.getElementById("content").value;
+		formObj.submit();
 	});
 </script>
 </body>

@@ -9,6 +9,8 @@
 <body>
 <!-- header-start -->
 <%@ include file="../include/header.jsp"%>
+<script type="text/javascript" src="/se2/js/HuskyEZCreator.js" charset="utf-8"></script> 
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <!-- header-end -->
 
 <!-- bradcam_area_start -->
@@ -38,11 +40,16 @@
                     <label for="title">제목</label>
                     <input class="form-control" id="title" name="title" placeholder="제목을 입력해주세요">
                 </div>
-                <div class="form-group">
+                
                     <label for="content">내용</label>
-                    <textarea class="form-control" id="content" name="content" rows="30"
-                              placeholder="내용을 입력해주세요" style="height: 300px"></textarea>
-                </div>
+               		<div class="jsx-2303464893 editor"> 
+	               		<div class="fr-box fr-basic fr-top" role="application"> 
+		               		<div class="fr-wrapper show-placeholder" dir="auto"> 
+		               			<textarea name="content" id="content" style="width: 100%; height: 412px;"></textarea> 
+	               			</div> 
+               			</div> 
+               		</div>
+                
                 <div class="form-group">
                     <label for="writer">작성자</label>
                     <input class="form-control" id="writer" name="writer" value="${login.userId}" readonly>
@@ -51,8 +58,7 @@
             <div class="box-footer">
                 <button type="button" class="genric-btn info-border medium listBtn">목록</button>
                 <div class="pull-right">
-                    <button type="reset" class="genric-btn info-border medium">초기화</button>
-                    <button type="submit" class="genric-btn info-border medium">저장</button>
+                    <button id="savebutton" type="submit" class="genric-btn info-border medium">저장</button>
                 </div>
             </div>
         </div>
@@ -82,6 +88,57 @@
 		});
 
 	});
+</script>
+<script type="text/javascript">
+	var oEditors = []; 
+		nhn.husky.EZCreator.createInIFrame({
+		oAppRef : oEditors, 
+		elPlaceHolder : "content", //저는 textarea의 id
+		sSkinURI : "/se2/SmartEditor2Skin.html", //경로
+		fCreator : "createSEditor2", 
+		htParams : { 
+			bUseToolbar : true, 
+			bUseVerticalResizer : false, 
+			bUseModeChanger : false 
+		} 
+	});
+    
+    $("#savebutton").click(function(){
+    	var elClickedObj = $("#writeForm");
+        oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+        var content = $("#content").val();
+
+        if( content == ""  || content == null || content == '&nbsp;' || content == '<p>&nbsp;</p>')  {
+             alert("내용을 입력하세요.");
+             oEditors.getById["content"].exec("FOCUS"); //포커싱
+             return false;
+        }
+
+        try {
+            elClickedObj.submit();
+        } catch(e) {}
+    });
+    
+//     $("#savebutton").click(function(){
+//     	var elClickedObj = $("#writeForm");
+//         oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+//         var content = $("#content").text();
+//         var title = $("#title").val();
+
+//         if( content == ""  || content == null || content == '&nbsp;' || content == '<p>&nbsp;</p>')  {
+//              alert("내용을 입력하세요.");
+//              oEditors.getById["content"].exec("FOCUS"); //포커싱
+//              return false;
+//         } else if( title == ""  || title == null || title == '&nbsp;' || title == '<p>&nbsp;</p>')  {
+//             alert("내용을 입력하세요.");
+//             $("#title").focus();
+//             return false;
+//         }
+//         try {
+//             elClickedObj.submit();
+//         } catch(e) {}
+//     });   
+
 </script>
 </body>
 </html>
