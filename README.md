@@ -13,12 +13,12 @@
   * Maria DB
   * tomcat 8.5
   * jquery 3.2.1
-  * htm
-  l5, css3, js, bootstrap
+  * html5, css3, js, bootstrap
 
 
 ## 주요기능
-  * 회원가입, 로그인, 비밀번호 암호화
+  * 회원가입, 아이디중복검사, 비밀번호 암호화
+  * 로그인 / 자동로그인 / 로그아웃
   * 게시판 CRUD / 게시글 조회수
   * 검색 / 페이징처리
   * REST방식으로 구현한 댓글 ajax CRUD
