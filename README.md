@@ -1,7 +1,6 @@
 # Hotel-Reservation
 > java, spring을 기반으로 한 호텔 예약 웹사이트 프로젝트 
 
-> http://www.luxuryhotel.ga/
 
 ## 프로젝트소개
   * 프로젝트 기간 : 2020-07-01 ~ 2020-07-17
