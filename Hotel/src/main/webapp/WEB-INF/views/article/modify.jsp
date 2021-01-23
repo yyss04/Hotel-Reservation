@@ -65,8 +65,8 @@
 									<button type="button" class="genric-btn info-border medium cancelBtn">
 										취소
 									</button>
-									<button id="button" type="submit" class="genric-btn info-border medium modBtn">
-										수정 저장
+									<button id="modbutton" type="submit" class="genric-btn info-border medium modBtn">
+										등록
 									</button>
 								</div>
 							</div>
@@ -124,11 +124,35 @@
 		} 
 	});
 		
-	$(".modBtn").on("click", function() {
-		oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-        var content = document.getElementById("content").value;
-		formObj.submit();
-	});
+	$(function(){
+		$("#modbutton").click(function(){
+			oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+			var title = $("#title").val();
+			var content = document.getElementById("content").value;
+			
+			if (title == null || title == "") { 
+				alert("제목을 입력해주세요."); 
+				$("#title").focus(); 
+				return false; 
+			}
+			
+			if(content == "" || content == null || content == '&nbsp;' 
+				|| content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){ 
+				alert("내용을 입력해주세요."); 
+				oEditors.getById["content"].exec("FOCUS"); 
+				return false; 
+			} 
+			var result = confirm("등록 하시겠습니까?"); 
+			if(result){ 
+				alert("등록 되었습니다."); 
+				$("#modForm").submit();
+				
+				}else{ 
+					return false; 
+				}
+		 });
+	})
+
 </script>
 </body>
 </html>

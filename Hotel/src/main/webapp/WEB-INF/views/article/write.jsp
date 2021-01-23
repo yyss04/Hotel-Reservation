@@ -103,41 +103,35 @@
 		} 
 	});
     
-    $("#savebutton").click(function(){
-    	var elClickedObj = $("#writeForm");
-        oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-        var content = $("#content").val();
-
-        if( content == ""  || content == null || content == '&nbsp;' || content == '<p>&nbsp;</p>')  {
-             alert("내용을 입력하세요.");
-             oEditors.getById["content"].exec("FOCUS"); //포커싱
-             return false;
-        }
-
-        try {
-            elClickedObj.submit();
-        } catch(e) {}
-    });
-    
-//     $("#savebutton").click(function(){
-//     	var elClickedObj = $("#writeForm");
-//         oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-//         var content = $("#content").text();
-//         var title = $("#title").val();
-
-//         if( content == ""  || content == null || content == '&nbsp;' || content == '<p>&nbsp;</p>')  {
-//              alert("내용을 입력하세요.");
-//              oEditors.getById["content"].exec("FOCUS"); //포커싱
-//              return false;
-//         } else if( title == ""  || title == null || title == '&nbsp;' || title == '<p>&nbsp;</p>')  {
-//             alert("내용을 입력하세요.");
-//             $("#title").focus();
-//             return false;
-//         }
-//         try {
-//             elClickedObj.submit();
-//         } catch(e) {}
-//     });   
+	$(function(){
+		$("#savebutton").click(function(){
+			oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+			var title = $("#title").val();
+			var content = document.getElementById("content").value;
+			
+			if (title == null || title == "") { 
+				alert("제목을 입력해주세요."); 
+				$("#title").focus(); 
+				return false; 
+			}
+			
+			if(content == "" || content == null || content == '&nbsp;' 
+				|| content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){ 
+				alert("내용을 입력해주세요."); 
+				oEditors.getById["content"].exec("FOCUS"); 
+				return false; 
+			} 
+			var result = confirm("등록 하시겠습니까?"); 
+			if(result){ 
+				alert("등록 되었습니다."); 
+				$("#writeForm").submit();
+				
+				}else{ 
+					return false; 
+				}
+		 });
+	})
+       
 
 </script>
 </body>

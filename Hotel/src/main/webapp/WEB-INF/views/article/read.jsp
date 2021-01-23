@@ -247,6 +247,13 @@ $(document).on('click', '#btnReplySave', function(){
 		var headers = {"Content-Type" : "application/json"
 				, "X-HTTP-Method-Override" : "POST"};
 		
+		
+		if (replyContent == null || replyContent == "") { 
+			alert("내용을 입력해주세요."); 
+			$("#content").focus(); 
+			return false; 
+		}
+		
 		$.ajax({
 			url: "${pageContext.request.contextPath}/restArticle/saveReply"
 			, headers : headers
@@ -299,6 +306,12 @@ function fn_updateReply(rid, reg_id){
 
 		var headers = {"Content-Type" : "application/json"
 				, "X-HTTP-Method-Override" : "POST"};
+		
+		if (replyEditContent == null || replyEditContent == "") { 
+			alert("내용을 입력해주세요."); 
+			$("#editContent").focus(); 
+			return false; 
+		}
 	
 		$.ajax({
 			url: "${updateReplyURL}"
@@ -341,20 +354,6 @@ function fn_deleteReply(rid){
 		
 	}
 
-// var oEditors = []; 
-// 	nhn.husky.EZCreator.createInIFrame({
-// 	oAppRef : oEditors, 
-// 	elPlaceHolder : "content", //저는 textarea의 id와 똑같이 적어줬습니다. 
-// 	sSkinURI : "/se2/SmartEditor2Skin.html", //경로를 꼭 맞춰주세요! 
-// 	htParams : { 
-// 		// 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
-// 		bUseToolbar : false, 
-// 		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
-// 		bUseVerticalResizer : false, 
-// 		// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
-// 		bUseModeChanger : false 
-// 	} 
-// });
 </script>
 
 </body>
