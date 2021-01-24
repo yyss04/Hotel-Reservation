@@ -15,7 +15,7 @@
 
 <!-- bradcam_area_start -->
 <div class="bradcam_area breadcam_bg">
-    <h3>방문 후기</h3>
+    <h3>게시판</h3>
 </div>
 <!-- bradcam_area_end -->
 
@@ -24,7 +24,7 @@
 <div class="whole_wrap">
      <div class="container">
   		<div class="section-top-border">
-			<h2 class="mb-30">방문 후기</h2>
+			<h2 class="mb-30">게시판</h2>
 
     <!-- Main content -->
     <section class="content container-fluid">
